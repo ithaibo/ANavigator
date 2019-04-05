@@ -5,3 +5,6 @@ dependencies {
     compileOnly project(':android_stub')
     implementation project(':core')
 }
+
+group = 'com.andy.navigator'
+version = '1.0.0'
