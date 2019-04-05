@@ -35,3 +35,24 @@ ANavigator.getInstance()
   .apply();
 ```
 好了，使用方式我也讲完了，就这么多。
+
+## API
+1. 从哪儿来
+``` java
+public ANavigator from(@NonNull Context cxt);
+```
+2. 到哪儿去
+``` java
+public ANavigator to(@NonNull Intent intent);
+```
+3. 如何接收结果
+``` java
+public ANavigator onResult(@Nullable ResultConsumer resultConsumer);
+```
+4. 万事具备，出发
+``` java
+public final void apply();
+```
+
+## 注意事项
+为了更小的包体积，api是Java模块，但是只能在Android模块中使用。
