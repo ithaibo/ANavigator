@@ -3,7 +3,7 @@ package com.andy.navigator.core;
 import android.app.ActivityThread;
 import android.os.Handler;
 
-import com.andy.utils.ReflectUtils;
+import com.andy.navigator.utils.ReflectUtils;
 
 import java.lang.reflect.Field;
 
