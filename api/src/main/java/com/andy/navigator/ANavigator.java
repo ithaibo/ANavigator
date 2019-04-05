@@ -1,15 +1,19 @@
 package com.andy.navigator;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.ResultInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.andy.navigator.core.HandlerCallbackHook;
 import com.andy.navigator.core.Initializer;
 import com.andy.navigator.navigator.Navigator;
-import com.andy.navigator.navigator.NavigatorFromActivity;
+
+import java.util.List;
 
 public class ANavigator {
     private Activity ctxFrom;
@@ -95,5 +99,60 @@ public class ANavigator {
 
     private void navigateWithoutResult() {
         ctxFrom.startActivity(intent);
+    }
+
+    private static final class NavigatorFromActivity implements Navigator<Activity> {
+        private final String TAG = "NavigatorFrg";
+        @Override
+        public void launch(Activity from, @NonNull Intent intent, int requestCode, @Nullable ResultConsumer resulthandler) {
+            InnerFrg frg = (InnerFrg) from.getFragmentManager().findFragmentByTag(TAG);
+            if (frg == null) {
+                frg = new InnerFrg();
+                from.getFragmentManager().beginTransaction().add(frg, TAG).commit();
+                from.getFragmentManager().executePendingTransactions();
+            }
+            frg.startActivityForResult(requestCode, resulthandler, intent);
+        }
+    }
+
+    private static final class InnerCallback extends HandlerCallbackHook {
+        @Override
+        protected boolean onDispatchResult(List<ResultInfo> results) {
+            for (ResultInfo resultInfo : results) {
+                ResultConsumer resultConsumer = ResultConsumerWarehouse.get(resultInfo.mRequestCode);
+                if (null == resultConsumer) {
+                    continue;
+                }
+                resultConsumer.onResult(resultInfo.mResultCode, resultInfo.mData);
+                // clear
+                ResultConsumerWarehouse.remove(resultInfo.mRequestCode);
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    private static final class InnerFrg  extends Fragment {
+
+        public void startActivityForResult(int requestCode, ResultConsumer resultConsumer, Intent intent) {
+            ResultConsumerWarehouse.add(requestCode, resultConsumer);
+            startActivityForResult(intent, requestCode);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            ResultConsumer consumer = ResultConsumerWarehouse.get(requestCode);
+            if (null != consumer) {
+                consumer.onResult(resultCode, data);
+                ResultConsumerWarehouse.remove(requestCode);
+            }
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+        }
     }
 }
