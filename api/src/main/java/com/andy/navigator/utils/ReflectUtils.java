@@ -1,4 +1,4 @@
-package com.andy.utils;
+package com.andy.navigator.utils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

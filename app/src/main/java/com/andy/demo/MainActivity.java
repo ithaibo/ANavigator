@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.andy.anavigator.demo.R;
 import com.andy.navigator.ResultConsumer;
 import com.andy.navigator.ANavigator;
 

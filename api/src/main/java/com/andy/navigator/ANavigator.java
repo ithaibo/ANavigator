@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 
 import com.andy.navigator.core.HandlerCallbackHook;
 import com.andy.navigator.core.Initializer;
-import com.andy.navigator.navigator.Navigator;
 
 import java.util.List;
 
