@@ -14,13 +14,11 @@ import com.andy.navigator.navigator.NavigatorFromActivity;
 public class ANavigator {
     private Activity ctxFrom;
     private Intent intent;
+    private int reqCode = 1000;
     @Nullable
     private ResultConsumer resultConsumer;
 
     private Navigator navigator = new NavigatorFromActivity();
-    private ResultConsumerWarehouse consumerWarehouse;
-
-    private int reqCode = 1000;
 
 
     private ANavigator() {
@@ -30,7 +28,7 @@ public class ANavigator {
         private static final ANavigator instance = new ANavigator();
     }
 
-    public static final ANavigator getInstance() {
+    public static ANavigator getInstance() {
         return Holder.instance;
     }
 
