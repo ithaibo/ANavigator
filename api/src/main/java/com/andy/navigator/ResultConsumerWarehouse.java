@@ -19,4 +19,8 @@ class ResultConsumerWarehouse {
     public static ResultConsumer get(@NonNull Integer key) {
         return resultObservers.size() <= 0 ? null : resultObservers.get(key);
     }
+
+    public static synchronized void clear() {
+        resultObservers.clear();
+    }
 }
