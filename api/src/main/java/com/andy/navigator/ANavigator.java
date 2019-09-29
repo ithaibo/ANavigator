@@ -100,7 +100,7 @@ public class ANavigator {
         ctxFrom.startActivity(intent);
     }
 
-    private static final class NavigatorFromActivity implements Navigator<Activity> {
+    private static class NavigatorFromActivity implements Navigator<Activity> {
         private final String TAG = "NavigatorFrg";
         @Override
         public void launch(Activity from, @NonNull Intent intent, int requestCode, @Nullable ResultConsumer resulthandler) {
@@ -114,7 +114,7 @@ public class ANavigator {
         }
     }
 
-    private static final class InnerCallback extends HandlerCallbackHook {
+    private static class InnerCallback extends HandlerCallbackHook {
         @Override
         protected boolean onDispatchResult(List<ResultInfo> results) {
             for (ResultInfo resultInfo : results) {
@@ -132,7 +132,7 @@ public class ANavigator {
         }
     }
 
-    private static final class InnerFrg  extends Fragment {
+    public static final class InnerFrg  extends Fragment {
 
         public void startActivityForResult(int requestCode, ResultConsumer resultConsumer, Intent intent) {
             ResultConsumerWarehouse.add(requestCode, resultConsumer);
@@ -147,11 +147,6 @@ public class ANavigator {
                 consumer.onResult(resultCode, data);
                 ResultConsumerWarehouse.remove(requestCode);
             }
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
         }
     }
 }
